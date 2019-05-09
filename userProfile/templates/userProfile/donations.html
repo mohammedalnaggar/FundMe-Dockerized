@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Donations</title>
+</head>
+<body>
+{% for d in donations %}
+
+ <h1> <a href= "{% url 'show_project' d.project.id %}" >{{d.project.title}} </a></h1>
+ Donation amount : {{ d.donation_amount}}
+
+{% endfor %}
+
+</body>
+</html>

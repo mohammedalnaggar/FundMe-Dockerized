@@ -1,0 +1,130 @@
+{% extends "userProfile/base.html" %}
+{% load staticfiles %}
+{% load ratings %}
+
+
+<!-- HEADER SECTION -->
+{% block header %}
+<div class="block-31" style="position: relative;">
+    <div class="owl-carousel loop-block-31 ">
+
+        {% static "images/" as x %}
+
+        <div class="block-30 item" style='background-image: url("{{x}}/bg_3.jpg");'
+             data-stellar-background-ratio="0.5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="heading">Fundraising for the people and causes you care about.</h4>
+
+                        <div>
+
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'userProfile:user_login' %}"><input value="Start a new project"
+                                                                                class="btn btn-primary"></a>
+                            {% else %}
+                            <a href="{% url 'userProfile:create_project' %}"><input value="Start a new project"
+                                                                                    class="btn btn-primary"></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div> <!-- HEADER -->
+{% endblock %}
+
+
+<!--Your Projects-->
+
+{% block featured_projects %}
+<div class="site-section fund-raisers">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h2><b> Your projects </b></h2>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12 block-11">
+                <div class="nonloop-block-11 owl-carousel">
+                    {% for project in projects %}
+                    <div class="card fundraise-item">
+
+                        {% for picture in project.projectpics_set.all %}
+                        {% if forloop.counter == 1 %}
+
+                        <a href="{% url 'show_project' project.id %}"><img class="card-img-top"
+                                                                           src="{{picture.project_picture.url}}"
+                                                                           alt="Image placeholder"></a>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="card-body">
+                            <h3 class="card-title"><a href="{% url 'show_project' project.id %}">{{project.title}}</a>
+                            </h3>
+                            <p class="card-text">{{project.details | truncatewords:10}}</p>
+                            <div class="progress custom-progress-success">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                     style="width: {{project.percentage}}%"
+                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <a href="{% url 'userProfile:delete_user_project' project.id %}">Delete Project</a>
+                            <span class="fund-raised d-block">$ {{ project.total_donations }} raised of ${{project.total_target}}</span>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                    You didn't create any projects yet.
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- Latest Projects -->
+{% endblock %}
+
+
+{% block donations %}
+
+
+<div class="site-section fund-raisers">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12 ">
+                <h2><b> Your Donations </b></h2>
+            </div>
+        </div>
+
+        <div class="row">
+
+            {% for d in donations %}
+
+            <div class="col-md-6 col-lg-3 mb-5">
+                <div class="person-donate text-center bg-light pt-4">
+
+                    <div class="donate-info">
+                        <h2><a href="{% url 'show_project' d.project.id %}">{{d.project.title}} </a></h2>
+                        <br>
+                        <div class="donate-amount d-flex">
+                            <div class="label">Donated</div>
+                            <div class="amount">$ {{ d.donation_amount}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% empty %}
+            You don't have any donations yet.
+            {% endfor %}
+
+        </div>
+    </div>
+</div> <!-- .section -->
+
+
+{% endblock %}

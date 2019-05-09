@@ -1,0 +1,49 @@
+{% extends "userProfile/base.html" %}
+
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block body_block %}
+
+
+<div class="block-31" style="position: relative;">
+    <div class="owl-carousel loop-block-31 ">
+        {% static "images/" as x %}
+
+        <div class="block-30 block-30-sm item" style='background-image: url("{{x}}/bg_2.jpg");'
+             data-stellar-background-ratio="0.5">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-7 text-center">
+                        <h2 class="heading">Start your project</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div style="width:50%; margin-left: 25%">
+
+    <div class="site-section">
+        <div class="container">
+
+            <form enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                {{ project_form|crispy }}
+                <!--            {{ project_pics_form.as_p }}-->
+                <label> Project pictures </label> <br>
+
+                <input type="file" name="project_pictures" required multiple>
+                {{ project_tags_form|crispy }}
+                <input class="btn btn-primary py-3 px-5" style="width:50%;margin-left: 25%;margin-top:10% "
+                       type="submit" name="" value="Submit">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
