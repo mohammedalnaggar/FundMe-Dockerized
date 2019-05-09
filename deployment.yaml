@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: django-deployment 
+spec: 
+  selector: 
+    matchLabels: 
+      app: fundme 
+  replicas: 3 
+  template: 
+    metadata: 
+      labels: 
+        app: fundme 
+    spec: 
+      containers: 
+      - name: fundme 
+        image: mohammedalnaggar/fundme_web:latest
+        ports: 
+        - containerPort: 80
